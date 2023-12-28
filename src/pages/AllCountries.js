@@ -5,16 +5,8 @@ import { useNavigate } from "react-router-dom";
 const Trying = () => {
   const navigate = useNavigate();
   const [countries, setCountries] = useState(null);
-  // const [renderedCountries, setRenderedCountries] = useState(countries);
 
   const url = "https://restcountries.com/v3.1/all";
-
-  // function showCountriesDetails(name) {
-  //   const currentCountry = countries.filter(
-  //     (country) => country.name.common == name
-  //   );
-  //   localStorage.setItem("currentCountry", JSON.stringify(currentCountry));
-  // }
 
   function sendToDetailsPage(index) {
     const pickedCountry = countries.filter(
@@ -35,7 +27,7 @@ const Trying = () => {
           emptyArray.push(data[i]);
         }
         setCountries(emptyArray);
-        // setRenderedCountries(countries);
+        localStorage.setItem("allCountries", JSON.stringify(data));
         console.log("allcountried", data);
       })
       .catch((error) => {
@@ -43,27 +35,18 @@ const Trying = () => {
       });
   }, []);
 
-  // function searchCountryByName(e) {
-  //   const filteredCountries = countries.filter((country) =>
-  //     country.name.common.toLowerCase().includes(e.target.value.toLowerCase())
-  //   );
-
-  //   setRenderedCountries(filteredCountries);
-  // }
-
   return (
     <div className="mt-6 px-6">
       <input
         type="text"
         placeholder="Search for a country..."
-        className="bg-white shadow-lg block w-[85%] mx-auto mb-8 py-2 px-2 rounded-md"
-        // onChange={searchCountryByName}
+        className="bg-white shadow-lg block w-[85%] md:max-w-[30rem] mx-auto mb-8 py-2 px-2 rounded-md"
       />
-      <div className="flex flex-col md:flex-row flex-wrap gap-12 md:gap-6 bg-gray-200">
+      <div className="flex flex-col md:flex-row flex-wrap gap-12 md:gap-6">
         {countries ? (
           countries.map((country, index) => (
             <div
-              className="w-[85%] md:max-w-60 mx-auto rounded-md overflow-hidden flex flex-col gap-2 bg-white"
+              className="w-[85%] md:max-w-60 mx-auto rounded-md overflow-hidden flex flex-col gap-2 bg-white cursor-pointer"
               onClick={() => sendToDetailsPage(index)}
               id={index}
             >

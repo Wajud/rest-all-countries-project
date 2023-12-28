@@ -1,9 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Details = () => {
-  const pickedCountry = JSON.parse(localStorage.getItem("pickedCountry"));
-  console.log(pickedCountry);
+  const enteringCountry = JSON.parse(localStorage.getItem("pickedCountry"));
+  const allCountries = JSON.parse(localStorage.getItem("allCountries"));
+  const [pickedCountry, setPickedCountry] = useState(enteringCountry);
+
+  const borderingCountries = pickedCountry.borders;
+  let borderingCountriesHolder = [];
+
+  if (borderingCountries) {
+    borderingCountries.forEach((country) => {
+      const borderingCountry = allCountries.filter(
+        (current) => current.cca3 == country
+      )[0];
+      borderingCountriesHolder.push(borderingCountry);
+    });
+  }
+
+  function updatePickedCountry(index) {
+    const clickedCountry = allCountries.filter(
+      (country) =>
+        country.name.common == borderingCountriesHolder[index].name.common
+    )[0];
+
+    localStorage.setItem("pickedCountry", JSON.stringify(pickedCountry));
+    setPickedCountry(clickedCountry);
+  }
+
   return (
     <div className="pt-4 pb-10 w-[90%] mx-auto">
       <Link to="/">
@@ -77,37 +101,20 @@ const Details = () => {
       </div>
 
       <h2 className="font-semibold mt-12 mb-6">Border Countries</h2>
-
-      {/* <div
-              className="w-[85%] md:max-w-60 mx-auto rounded-md overflow-hidden flex flex-col gap-2 bg-white"
-              onClick={() => sendToDetailsPage(index)}
-              id={index}
+      <div className="flex items-start gap-2 flex-wrap">
+        {borderingCountriesHolder?.length > 0 ? (
+          borderingCountriesHolder.map((country, index) => (
+            <p
+              className="w-24 min-w-fit text-center px-2 py-1 border border-gray-200 rounded-sm cursor-pointer"
+              onClick={() => updatePickedCountry(index)}
             >
-              <img
-                src={country.flags.png}
-                alt=""
-                className="w-full h-44 md:h-36 object-fit"
-              />
-              <div className="py-2">
-                <h1 className="font-bold text-lg px-4 mb-2">
-                  {country.name.common}
-                </h1>
-                <p className="font-semibold px-4 mb-2">
-                  Population:{" "}
-                  <span className="font-normal">{country.population}</span>
-                </p>
-                <p className="font-semibold px-4 mb-2">
-                  Region: <span className="font-normal">{country.region}</span>
-                </p>
-                <p className="font-semibold px-4 mb-2">
-                  Capital:{" "}
-                  <span className="font-normal">{country.capital}</span>
-                </p>
-                <p className="font-semibold px-4 mb-2">
-                  Number: <span className="font-normal">{index + 1}</span>
-                </p>
-              </div>
-            </div> */}
+              {country.name.common}
+            </p>
+          ))
+        ) : (
+          <p className="">Has no bordering country</p>
+        )}
+      </div>
     </div>
   );
 };

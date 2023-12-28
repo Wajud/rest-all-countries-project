@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 
-import { NightModeContext } from "../../App";
+import { NightModeContext } from "../App";
 
-const Navbar = ({ bgColor, setBgColor, textColor, setTextColor }) => {
+const Navbar = () => {
   const { nightMode, setNightMode } = useContext(NightModeContext);
 
   return (
-    <div className="px-6 py-2 flex gap-12 justify-between">
-      <h1 className={`font-bold text-[${textColor}]`}>Where in the world?</h1>
+    <div className="w-[90%] mx-auto py-4 flex gap-12 justify-between">
+      <h1 className={`font-bold`}>Where in the world?</h1>
       <div
         className={`flex gap-2 items-center cursor-pointer`}
         onClick={(e) => setNightMode((nightMode) => !nightMode)}
@@ -46,7 +46,7 @@ const Navbar = ({ bgColor, setBgColor, textColor, setTextColor }) => {
           </div>
         )}
 
-        <p className={`font-semibold ${textColor}`}>Dark Mode</p>
+        <p className={`font-semibold`}>Dark Mode</p>
       </div>
     </div>
   );
