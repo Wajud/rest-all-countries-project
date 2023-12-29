@@ -2,20 +2,12 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Trying = () => {
+const AllCountries = () => {
   const navigate = useNavigate();
   const [countries, setCountries] = useState(null);
+  const [filteredCountries, setFilteredCountries] = useState(countries);
 
   const url = "https://restcountries.com/v3.1/all";
-
-  function sendToDetailsPage(index) {
-    const pickedCountry = countries.filter(
-      (country) => country.name.common == countries[index].name.common
-    )[0];
-    localStorage.setItem("pickedCountry", JSON.stringify(pickedCountry));
-    console.log("pickedCountry", pickedCountry);
-    navigate("/details");
-  }
 
   let emptyArray = [];
 
@@ -27,13 +19,29 @@ const Trying = () => {
           emptyArray.push(data[i]);
         }
         setCountries(emptyArray);
+        setFilteredCountries(emptyArray);
         localStorage.setItem("allCountries", JSON.stringify(data));
-        console.log("allcountried", data);
       })
       .catch((error) => {
         console.log("something went wrong", error);
       });
   }, []);
+
+  function sendToDetailsPage(index) {
+    const pickedCountry = countries.filter(
+      (country) => country.name.common == countries[index].name.common
+    )[0];
+    localStorage.setItem("pickedCountry", JSON.stringify(pickedCountry));
+    navigate("/details");
+  }
+
+  function runFilter(e) {
+    const searchTerm = e.target.value;
+    const passData = countries.filter((country) =>
+      country.name.common.includes(searchTerm)
+    );
+    setFilteredCountries(passData);
+  }
 
   return (
     <div className="mt-6 px-6">
@@ -41,10 +49,11 @@ const Trying = () => {
         type="text"
         placeholder="Search for a country..."
         className="bg-white shadow-lg block w-[85%] md:max-w-[30rem] mx-auto mb-8 py-2 px-2 rounded-md"
+        onChange={runFilter}
       />
       <div className="flex flex-col md:flex-row flex-wrap gap-12 md:gap-6">
-        {countries ? (
-          countries.map((country, index) => (
+        {filteredCountries ? (
+          filteredCountries.map((country, index) => (
             <div
               className="w-[85%] md:max-w-60 mx-auto rounded-md overflow-hidden flex flex-col gap-2 bg-white cursor-pointer"
               onClick={() => sendToDetailsPage(index)}
@@ -86,4 +95,4 @@ const Trying = () => {
   );
 };
 
-export default Trying;
+export default AllCountries;

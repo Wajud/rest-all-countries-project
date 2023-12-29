@@ -49,72 +49,83 @@ const Details = () => {
           <p>Back</p>
         </div>
       </Link>
-      <img
-        src={pickedCountry.flags.png}
-        alt="flag"
-        className="mt-8 w-[90%] max-w-80  h-52  object-cover rounded-sm"
-      />
-      <div className="w-[90%] mt-12 mb-12">
-        <p className="font-semibold text-xl mb-4">
-          {pickedCountry.name.common}
-        </p>
-        <div className="flex flex-col gap-2">
-          <p className="font-semibold">
-            Native Language:{" "}
-            <span className="font-normal">{pickedCountry.name.common}</span>
-          </p>
-          <p className="font-semibold">
-            Population:{" "}
-            <span className="font-normal">{pickedCountry.population}</span>
-          </p>
-          <p className="font-semibold">
-            Region: <span className="font-normal">{pickedCountry.region}</span>
-          </p>
-          <p className="font-semibold">
-            Sub Region:{" "}
-            <span className="font-normal">{pickedCountry.subregion}</span>
-          </p>
-          <p className="font-semibold">
-            Capital:{" "}
-            <span className="font-normal">{pickedCountry.capital}</span>
-          </p>
+      <section className="flex flex-col md:flex-row md:justify-between md:items-start md:gap-32">
+        <img
+          src={pickedCountry.flags.png}
+          alt="flag"
+          className="mt-8 w-[90%] max-w-80 md:w-[50%] md:max-w-92 h-52 md:h-96 object-cover rounded-sm"
+        />
+        <div className="md:w-[50%] md:flex-1">
+          <div className="md:flex justify-between md:pt-12">
+            <div className="w-[90%] md:w-full mt-12 md:mt-0 mb-12 md:gap-6">
+              <p className="font-bold text-2xl mb-8">
+                {pickedCountry.name.common}
+              </p>
+              <div className="flex flex-col gap-2">
+                <p className="font-semibold">
+                  Native Language:{" "}
+                  <span className="font-normal">
+                    {pickedCountry.name.common}
+                  </span>
+                </p>
+                <p className="font-semibold">
+                  Population:{" "}
+                  <span className="font-normal">
+                    {pickedCountry.population}
+                  </span>
+                </p>
+                <p className="font-semibold">
+                  Region:{" "}
+                  <span className="font-normal">{pickedCountry.region}</span>
+                </p>
+                <p className="font-semibold">
+                  Sub Region:{" "}
+                  <span className="font-normal">{pickedCountry.subregion}</span>
+                </p>
+                <p className="font-semibold">
+                  Capital:{" "}
+                  <span className="font-normal">{pickedCountry.capital}</span>
+                </p>
+              </div>
+            </div>
+
+            <div className="w-[90%] md:w-full flex flex-col gap-2 md:mt-16">
+              <p className="font-semibold">
+                Top Level Domain:{" "}
+                <span className="font-normal">{pickedCountry.tld[0]}</span>
+              </p>
+              <p className="font-semibold">
+                Currencies:{" "}
+                <span className="font-normal">
+                  {Object.keys(pickedCountry.currencies)[0]}
+                </span>
+              </p>
+              <p className="font-semibold">
+                Languages:{" "}
+                <span className="font-normal">
+                  {Object.values(pickedCountry.languages).join(", ")}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <h2 className="font-semibold mt-12 md:mt-2 mb-6">Border Countries</h2>
+          <div className="flex items-start gap-2 flex-wrap">
+            {borderingCountriesHolder?.length > 0 ? (
+              borderingCountriesHolder.map((country, index) => (
+                <p
+                  className="w-24 min-w-fit text-center px-2 py-1 border border-gray-200 rounded-sm cursor-pointer"
+                  onClick={() => updatePickedCountry(index)}
+                >
+                  {country.name.common}
+                </p>
+              ))
+            ) : (
+              <p className="">Has no bordering country</p>
+            )}
+          </div>
         </div>
-      </div>
-
-      <div className="w-[90%] flex flex-col gap-2 ">
-        <p className="font-semibold">
-          Top Level Domain:{" "}
-          <span className="font-normal">{pickedCountry.tld[0]}</span>
-        </p>
-        <p className="font-semibold">
-          Currencies:{" "}
-          <span className="font-normal">
-            {Object.keys(pickedCountry.currencies)[0]}
-          </span>
-        </p>
-        <p className="font-semibold">
-          Languages:{" "}
-          <span className="font-normal">
-            {Object.values(pickedCountry.languages).join(", ")}
-          </span>
-        </p>
-      </div>
-
-      <h2 className="font-semibold mt-12 mb-6">Border Countries</h2>
-      <div className="flex items-start gap-2 flex-wrap">
-        {borderingCountriesHolder?.length > 0 ? (
-          borderingCountriesHolder.map((country, index) => (
-            <p
-              className="w-24 min-w-fit text-center px-2 py-1 border border-gray-200 rounded-sm cursor-pointer"
-              onClick={() => updatePickedCountry(index)}
-            >
-              {country.name.common}
-            </p>
-          ))
-        ) : (
-          <p className="">Has no bordering country</p>
-        )}
-      </div>
+      </section>
     </div>
   );
 };
