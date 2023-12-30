@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Details = ({ nightMode }) => {
+const CountryDetails = ({ nightMode }) => {
   const enteringCountry = JSON.parse(localStorage.getItem("pickedCountry"));
   const allCountries = JSON.parse(localStorage.getItem("allCountries"));
   const [pickedCountry, setPickedCountry] = useState(enteringCountry);
+
+  const navigate = useNavigate();
 
   const borderingCountries = pickedCountry.borders;
   let borderingCountriesHolder = [];
@@ -24,14 +26,15 @@ const Details = ({ nightMode }) => {
         country.name.common == borderingCountriesHolder[index].name.common
     )[0];
 
-    localStorage.setItem("pickedCountry", JSON.stringify(pickedCountry));
+    localStorage.setItem("pickedCountry", JSON.stringify(clickedCountry));
     setPickedCountry(clickedCountry);
+    navigate(`/countries/${clickedCountry.name.common}`);
   }
 
   return (
     <div
       className={
-        nightMode === true
+        nightMode
           ? "bg-[hsl(207,26%,17%)] text-[hsl(0,0%,100%)]"
           : "bg-[hsl(0,0%,98%)] text-[hsl(200,15%,8%)]"
       }
@@ -40,7 +43,7 @@ const Details = ({ nightMode }) => {
         <Link to="/">
           <div
             className={`w-fit my-4 shadow-lg flex gap-2 items-center px-4 py-1 rounded-sm ${
-              nightMode === true
+              nightMode
                 ? "bg-[hsl(209,23%,22%)] text-[hsl(0,0%,100%)]"
                 : "bg-[hsl(0,0%,100%)] text-[hsl(200,15%,8%)]"
             }`}
@@ -132,7 +135,7 @@ const Details = ({ nightMode }) => {
                 borderingCountriesHolder?.map((country, index) => (
                   <p
                     className={`w-24 min-w-fit text-center px-2 py-1 shadow-lg rounded-sm cursor-pointer ${
-                      nightMode === true
+                      nightMode
                         ? "bg-[hsl(209,23%,22%)] text-[hsl(0,0%,100%)]"
                         : "bg-[hsl(0,0%,100%)] text-[hsl(200,15%,8%)]"
                     }`}
@@ -152,4 +155,4 @@ const Details = ({ nightMode }) => {
   );
 };
 
-export default Details;
+export default CountryDetails;

@@ -4,7 +4,7 @@ const Navbar = ({ nightMode, setNightMode }) => {
   return (
     <div
       className={`${
-        nightMode === true
+        nightMode
           ? "bg-[hsl(209,23%,22%)] text-[hsl(0,0%,100%)]"
           : "bg-[hsl(0,0%,100%)] text-[hsl(200,15%,8%)]"
       }`}

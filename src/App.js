@@ -1,19 +1,11 @@
-import { useState, createContext } from "react";
-// import AllCountries from "./pages/AllCountries";
-import ReCountries from "./pages/ReCountries";
+import { useState } from "react";
+import AllCountries from "./pages/AllCountries";
 import Navbar from "./components/Navbar";
-import Details from "./pages/Details";
+import CountryDetails from "./pages/CountryDetails";
 import { Route, Routes } from "react-router-dom";
-
-export const NightModeContext = createContext();
 
 function App() {
   const [nightMode, setNightMode] = useState(false);
-  const [darkTextColor, setDarkTextColor] = useState(false);
-
-  const [darkBgColor, setDarkBgColor] = useState("hsl(207,26%,17%)");
-  const [lightBgColor, setLightBgColor] = useState("hsl(0,0%,98%)");
-  const [bgColor, setBgColor] = useState("hsl(0,0%,98%)");
 
   return (
     <div
@@ -25,8 +17,11 @@ function App() {
     >
       <Navbar nightMode={nightMode} setNightMode={setNightMode} />
       <Routes>
-        <Route path="/" element={<ReCountries nightMode={nightMode} />} />
-        <Route path="/details" element={<Details nightMode={nightMode} />} />
+        <Route path="/" element={<AllCountries nightMode={nightMode} />} />
+        <Route
+          path="/countries/:countryName"
+          element={<CountryDetails nightMode={nightMode} />}
+        />
       </Routes>
     </div>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const AllCountries = () => {
+const AllCountries = ({ nightMode }) => {
   const navigate = useNavigate();
   const [countries, setCountries] = useState(null);
   const [filteredCountries, setFilteredCountries] = useState(countries);
@@ -26,9 +26,8 @@ const AllCountries = () => {
     const pickedCountry = countries.filter(
       (country) => country.name.common == item.name.common
     )[0];
-    console.log(pickedCountry);
     localStorage.setItem("pickedCountry", JSON.stringify(pickedCountry));
-    navigate("/details");
+    navigate(`/countries/${pickedCountry.name.common}`);
   }
 
   function runFilter(e) {
@@ -52,34 +51,70 @@ const AllCountries = () => {
   }
 
   return (
-    <div className="mt-6 px-6">
-      <input
-        type="text"
-        placeholder="Search for a country..."
-        className="bg-white shadow-lg block w-[85%] md:max-w-[30rem] mx-auto mb-4 py-2 px-2 rounded-md"
-        onChange={runFilter}
-      />
-      <form className="">
-        <select
-          name="region"
-          onChange={filterByRegion}
-          className="outline-none focus:outline-none px-4 py-2 rounded-md mb-4"
-        >
-          <option value="" className="mt-4">
-            Filter by Region
-          </option>
-          <option value="africa">Africa</option>
-          <option value="americas">America</option>
-          <option value="asia">Asia</option>
-          <option value="europe">Europe</option>
-          <option value="oceania">Oceania</option>
-        </select>
-      </form>
-      <div className="flex flex-col md:flex-row flex-wrap gap-12 md:gap-6">
+    <div
+      className={`pt-6 ${
+        nightMode
+          ? "bg-[hsl(207,26%,17%)] text-[hsl(0,0%,100%)]"
+          : "bg-[hsl(0,0%,98%)] text-[hsl(200,15%,8%)]"
+      }`}
+    >
+      <div className="w-[90%] md:w-[95%] mx-auto mb-6 flex flex-col gap-6 md:flex-row justify-between md:items-start">
+        <input
+          type="text"
+          placeholder="Search for a country..."
+          className={`shadow-md block w-full md:w-[28rem] py-2 px-2 rounded-md  ${
+            nightMode
+              ? "bg-[hsl(209,23%,22%)] text-[hsl(0,0%,100%)]"
+              : "bg-[ hsl(0,0%,100%)] text-[hsl(200,15%,8%)]"
+          }`}
+          onChange={runFilter}
+        />
+        <form className="w-40 relative">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-4 h-4 absolute top-[0.75rem] right-2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m19.5 8.25-7.5 7.5-7.5-7.5"
+            />
+          </svg>
+
+          <select
+            name="region"
+            onChange={filterByRegion}
+            className={`outline-none focus:outline-none px-4 py-2 rounded-md  appearance-none flex flex-col gap-8 w-full ${
+              nightMode
+                ? "bg-[hsl(209,23%,22%)] text-[hsl(0,0%,100%)]"
+                : "bg-[hsl(0,0%,100%)] text-[hsl(200,15%,8%)]"
+            } `}
+          >
+            <option value="" className="mt-4">
+              Filter by Region
+            </option>
+            <option value="africa">Africa</option>
+            <option value="americas">America</option>
+            <option value="asia">Asia</option>
+            <option value="europe">Europe</option>
+            <option value="oceania">Oceania</option>
+          </select>
+        </form>
+      </div>
+
+      <div className="w-[90%] md:w-[95%] mx-auto flex flex-col md:grid md:grid-cols-5 flex-wrap gap-12 md:gap-6">
         {filteredCountries ? (
           filteredCountries.map((country, index) => (
             <div
-              className="w-[85%] md:max-w-60 mx-auto rounded-md overflow-hidden flex flex-col gap-2 bg-white cursor-pointer"
+              className={`rounded-md overflow-hidden flex flex-col gap-2 cursor-pointer ${
+                nightMode
+                  ? "bg-[hsl(209,23%,22%)] text-[hsl(0,0%,100%)]"
+                  : "bg-[hsl(0,0%,100%)] text-[hsl(200,15%,8%)]"
+              }`}
               onClick={() => sendToDetailsPage(country)}
               id={index}
             >
@@ -110,8 +145,8 @@ const AllCountries = () => {
             </div>
           ))
         ) : (
-          <div className="bg-gray-200 h-[90vh] w-full flex items-center justify-center text-center font-semibold text-lg">
-            "Countries are being fetched..."
+          <div className="h-[85vh] w-full flex items-center justify-center text-center font-semibold text-lg md:col-span-5">
+            <p className="text-center">Countries are being fetched...</p>
           </div>
         )}
       </div>
