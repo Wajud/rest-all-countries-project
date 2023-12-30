@@ -9,17 +9,12 @@ const AllCountries = () => {
 
   const url = "https://restcountries.com/v3.1/all";
 
-  let emptyArray = [];
-
   useEffect(() => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        for (let i = 0; i < 100; i++) {
-          emptyArray.push(data[i]);
-        }
-        setCountries(emptyArray);
-        setFilteredCountries(emptyArray);
+        setCountries(data);
+        setFilteredCountries(data);
         localStorage.setItem("allCountries", JSON.stringify(data));
       })
       .catch((error) => {
@@ -27,10 +22,11 @@ const AllCountries = () => {
       });
   }, []);
 
-  function sendToDetailsPage(index) {
+  function sendToDetailsPage(item) {
     const pickedCountry = countries.filter(
-      (country) => country.name.common == countries[index].name.common
+      (country) => country.name.common == item.name.common
     )[0];
+    console.log(pickedCountry);
     localStorage.setItem("pickedCountry", JSON.stringify(pickedCountry));
     navigate("/details");
   }
@@ -43,20 +39,48 @@ const AllCountries = () => {
     setFilteredCountries(passData);
   }
 
+  function filterByRegion(e) {
+    const selectedRegion = e.target.value;
+    const countriesInRegion =
+      selectedRegion == ""
+        ? countries
+        : countries.filter(
+            (country) => country.region.toLowerCase() == selectedRegion
+          );
+    setFilteredCountries(countriesInRegion);
+    console.log(selectedRegion);
+  }
+
   return (
     <div className="mt-6 px-6">
       <input
         type="text"
         placeholder="Search for a country..."
-        className="bg-white shadow-lg block w-[85%] md:max-w-[30rem] mx-auto mb-8 py-2 px-2 rounded-md"
+        className="bg-white shadow-lg block w-[85%] md:max-w-[30rem] mx-auto mb-4 py-2 px-2 rounded-md"
         onChange={runFilter}
       />
+      <form className="">
+        <select
+          name="region"
+          onChange={filterByRegion}
+          className="outline-none focus:outline-none px-4 py-2 rounded-md mb-4"
+        >
+          <option value="" className="mt-4">
+            Filter by Region
+          </option>
+          <option value="africa">Africa</option>
+          <option value="americas">America</option>
+          <option value="asia">Asia</option>
+          <option value="europe">Europe</option>
+          <option value="oceania">Oceania</option>
+        </select>
+      </form>
       <div className="flex flex-col md:flex-row flex-wrap gap-12 md:gap-6">
         {filteredCountries ? (
           filteredCountries.map((country, index) => (
             <div
               className="w-[85%] md:max-w-60 mx-auto rounded-md overflow-hidden flex flex-col gap-2 bg-white cursor-pointer"
-              onClick={() => sendToDetailsPage(index)}
+              onClick={() => sendToDetailsPage(country)}
               id={index}
             >
               <img
