@@ -52,7 +52,7 @@ const AllCountries = ({ nightMode }) => {
 
   return (
     <div
-      className={`pt-6 min-h-[100vh] ${
+      className={`pt-6 pb-4 min-h-[100vh] ${
         nightMode
           ? "bg-[hsl(207,26%,17%)] text-[hsl(0,0%,100%)]"
           : "bg-[hsl(0,0%,98%)] text-[hsl(200,15%,8%)]"
