@@ -33,7 +33,7 @@ const AllCountries = ({ nightMode }) => {
   function runFilter(e) {
     const searchTerm = e.target.value;
     const passData = countries.filter((country) =>
-      country.name.common.includes(searchTerm)
+      country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredCountries(passData);
   }
