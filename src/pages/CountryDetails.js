@@ -14,7 +14,7 @@ const CountryDetails = ({ nightMode }) => {
   if (borderingCountries) {
     borderingCountries.forEach((country) => {
       const borderingCountry = allCountries.filter(
-        (current) => current.cca3 == country
+        (current) => current.cca3 === country
       )[0];
       borderingCountriesHolder.push(borderingCountry);
     });
@@ -23,7 +23,7 @@ const CountryDetails = ({ nightMode }) => {
   function updatePickedCountry(index) {
     const clickedCountry = allCountries.filter(
       (country) =>
-        country.name.common == borderingCountriesHolder[index].name.common
+        country.name.common === borderingCountriesHolder[index].name.common
     )[0];
 
     localStorage.setItem("pickedCountry", JSON.stringify(clickedCountry));

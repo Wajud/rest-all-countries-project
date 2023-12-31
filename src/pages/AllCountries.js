@@ -24,7 +24,7 @@ const AllCountries = ({ nightMode }) => {
 
   function sendToDetailsPage(item) {
     const pickedCountry = countries.filter(
-      (country) => country.name.common == item.name.common
+      (country) => country.name.common === item.name.common
     )[0];
     localStorage.setItem("pickedCountry", JSON.stringify(pickedCountry));
     navigate(`/countries/${pickedCountry.name.common}`);
@@ -41,10 +41,10 @@ const AllCountries = ({ nightMode }) => {
   function filterByRegion(e) {
     const selectedRegion = e.target.value;
     const countriesInRegion =
-      selectedRegion == ""
+      selectedRegion === ""
         ? countries
         : countries.filter(
-            (country) => country.region.toLowerCase() == selectedRegion
+            (country) => country.region.toLowerCase() === selectedRegion
           );
     setFilteredCountries(countriesInRegion);
     console.log(selectedRegion);
@@ -52,7 +52,7 @@ const AllCountries = ({ nightMode }) => {
 
   return (
     <div
-      className={`pt-6 ${
+      className={`pt-6 min-h-[100vh] ${
         nightMode
           ? "bg-[hsl(207,26%,17%)] text-[hsl(0,0%,100%)]"
           : "bg-[hsl(0,0%,98%)] text-[hsl(200,15%,8%)]"
@@ -137,9 +137,6 @@ const AllCountries = ({ nightMode }) => {
                 <p className="font-semibold px-4 mb-2">
                   Capital:{" "}
                   <span className="font-normal">{country.capital}</span>
-                </p>
-                <p className="font-semibold px-4 mb-2">
-                  Number: <span className="font-normal">{index + 1}</span>
                 </p>
               </div>
             </div>

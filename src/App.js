@@ -10,7 +10,7 @@ function App() {
   return (
     <div
       className={
-        "min-h-screen" + " " + nightMode == true
+        "min-h-screen" + " " + nightMode
           ? "bg-[hsl(207,26%,17%)]"
           : "bg-[hsl(0,0%,98%)]"
       }
