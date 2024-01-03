@@ -6,6 +6,7 @@ const AllCountries = ({ nightMode }) => {
   const navigate = useNavigate();
   const [countries, setCountries] = useState(null);
   const [filteredCountries, setFilteredCountries] = useState(countries);
+  const [continent, setContinent] = useState("");
 
   const url = "https://restcountries.com/v3.1/all";
 
@@ -18,7 +19,7 @@ const AllCountries = ({ nightMode }) => {
         localStorage.setItem("allCountries", JSON.stringify(data));
       })
       .catch((error) => {
-        console.log("something went wrong", error);
+        console.error("something went wrong", error);
       });
   }, []);
 
@@ -32,14 +33,26 @@ const AllCountries = ({ nightMode }) => {
 
   function runFilter(e) {
     const searchTerm = e.target.value;
-    const passData = countries.filter((country) =>
-      country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredCountries(passData);
+    if (continent == "") {
+      const passData = countries.filter((country) =>
+        country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredCountries(passData);
+    } else {
+      const passData = countries.filter(
+        (country) =>
+          country.name.common
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) &&
+          country.region.toLowerCase() == continent
+      );
+      setFilteredCountries(passData);
+    }
   }
 
   function filterByRegion(e) {
     const selectedRegion = e.target.value;
+    setContinent(selectedRegion);
     const countriesInRegion =
       selectedRegion === ""
         ? countries
